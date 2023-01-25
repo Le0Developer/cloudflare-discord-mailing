@@ -1,7 +1,7 @@
 
 # cloudflare-discord-mailing
 
-Discord mailing is a service that allows you to see and respond to E-Mails in
+cloudflare-discord-mailing is a worker that allows you to see and respond to E-Mails in
 Discord using [Cloudflare Workers][1] + [Route to Workers][2] + [Mailchannels][3].
 
 ## Setup
@@ -28,6 +28,7 @@ wrangler with `wrangler secret put TOKEN` and then entering it.
 
 5. Now that you've done the worker setup, set your workers url as the
 *INTERACTIONS ENDPOINT URL* in the Discord General Information tab of your application.
+(the URL will look something like `https://cloudflare-discord-mailing.<your-name>.workers.dev`)
 
 6. Finally, go to your [zone's Email Workers settings][4] and create a
 custom address (or catch-all) that routes to your worker.
