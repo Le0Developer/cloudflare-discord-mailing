@@ -8,7 +8,7 @@ function handleReplyButton(interaction: APIBaseInteraction<InteractionType.Messa
         type: InteractionResponseType.Modal,
         data: {
             custom_id: "respond",
-            title: "Respond to E-Mail",
+            title: `Reply to E-Mail by ${email.from.name || email.from.address}`,
             components: [
                 {
                     type: ComponentType.ActionRow,
@@ -28,7 +28,7 @@ function handleReplyButton(interaction: APIBaseInteraction<InteractionType.Messa
                         {
                             type: ComponentType.TextInput,
                             custom_id: "responsebody",
-                            label: "E-Mail body",
+                            label: "E-Mail content",
                             style: TextInputStyle.Paragraph,
                         }
                     ]
