@@ -37,6 +37,10 @@ custom address (or catch-all) that routes to your worker.
 
 https://mailchannels.zendesk.com/hc/en-us/articles/200262610-Set-up-SPF-Records
 
+## Routing to multiple channels
+
+You can modify `src/routing.ts` for more advanced routing.
+
 ## Known limitations
 
 - All attachments are ignored

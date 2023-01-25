@@ -4,6 +4,7 @@ import PostalMime from "postal-mime";
 import { EmailMessage, Env, PostalMail } from "./types";
 import { makeEmbed } from "./embed";
 import { APIActionRowComponent, APIButtonComponentWithCustomId, APIMessageActionRowComponent, ButtonStyle, ComponentType, RESTPostAPIChannelMessageFormDataBody } from "discord-api-types/v10";
+import getChannelId from "./routing";
 
 
 const REPLY_BUTTON: APIButtonComponentWithCustomId = {
@@ -23,6 +24,15 @@ export default async function handleEmail(message: EmailMessage, env: Env) {
     const body = await new Response(message.raw).arrayBuffer();
     const email = await parser.parse(body) as PostalMail;
 
+    // find channel id
+    const channelId = await getChannelId(email, env);
+    if(channelId === null) {
+        // If you want to reject the email instead of silently dropping,
+        // uncomment the following line:
+        // message.setReject("Rejected.");
+        return;
+    }
+
     // prepare discord request body
     const formData = new FormData();
 
@@ -32,9 +42,8 @@ export default async function handleEmail(message: EmailMessage, env: Env) {
         components: [REPLY_COMPONENT]
     }
     formData.append("payload_json", JSON.stringify(requestBody));
-
     // send to discord
-    const response = await fetch(`https://discord.com/api/v10/channels/${env.CHANNEL_ID}/messages`, {
+    const response = await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
         method: "POST",
         headers: {
             authorization: `Bot ${env.TOKEN}`
