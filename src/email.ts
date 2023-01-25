@@ -34,11 +34,14 @@ export default async function handleEmail(message: EmailMessage, env: Env) {
     formData.append("payload_json", JSON.stringify(requestBody));
 
     // send to discord
-    await fetch(`https://discord.com/api/v10/channels/${env.CHANNEL_ID}/messages`, {
+    const response = await fetch(`https://discord.com/api/v10/channels/${env.CHANNEL_ID}/messages`, {
         method: "POST",
         headers: {
             authorization: `Bot ${env.TOKEN}`
         },
         body: formData,
     });
+    if(response.status >= 400) {
+        message.setReject(`Failed to forward to upstream Discord: ${response.status}`)
+    }
 }
