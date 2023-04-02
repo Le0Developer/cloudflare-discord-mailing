@@ -4,6 +4,9 @@ export interface Env {
 	CHANNEL_ID: string;
 	TOKEN: string;
 	PUBLIC_KEY: string;
+	DKIM_DOMAIN: string;
+	DKIM_SELECTOR: string;
+	DKIM_PRIVATE_KEY: string;
 }
 
 export interface EmailMessage { // not yet in worker-types

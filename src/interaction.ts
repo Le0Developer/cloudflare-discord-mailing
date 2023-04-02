@@ -1,5 +1,7 @@
 import { APIBaseInteraction, APIEmbed, APIInteractionResponse, APIMessage, ComponentType, InteractionResponseType, InteractionType, MessageFlags, TextInputStyle } from "discord-api-types/v10";
 import { parseEmbed } from "./embed";
+import { sendEmail } from "./send";
+import { Env } from "./types";
 
 
 function handleReplyButton(interaction: APIBaseInteraction<InteractionType.MessageComponent, any>): APIInteractionResponse {
@@ -38,39 +40,12 @@ function handleReplyButton(interaction: APIBaseInteraction<InteractionType.Messa
     }
 }
 
-async function handleReplySubmit(interaction: APIBaseInteraction<InteractionType.MessageComponent, any>): Promise<APIInteractionResponse> {
+async function handleReplySubmit(interaction: APIBaseInteraction<InteractionType.MessageComponent, any>, env: Env): Promise<APIInteractionResponse> {
     const email = parseEmbed((interaction.message as APIMessage).embeds[0]);
     const subject = interaction.data.components[0].components[0].value;
     const body = interaction.data.components[1].components[0].value;
 
-    const requestBody = {
-        personalizations: [
-            {
-                to: [
-                    { name: email.from.name, email: email.from.address }
-                ],
-            },
-        ],
-        from: {
-            name: email.to.name,
-            email: email.to.address,
-        },
-        subject,
-        content: [
-            {
-                type: "text/plain",
-                value: body
-            }
-        ]
-    }
-
-    const response = await fetch("https://api.mailchannels.net/tx/v1/send", {
-        method: "POST",
-        headers: {
-            "content-type": "application/json"
-        },
-        body: JSON.stringify(requestBody)
-    })
+    const response = await sendEmail({email, subject, body }, env);
     return {
         type: InteractionResponseType.ChannelMessageWithSource,
         data: {
@@ -81,7 +56,7 @@ async function handleReplySubmit(interaction: APIBaseInteraction<InteractionType
 }
 
 
-export async function handleInteraction(interaction: APIBaseInteraction<any, any>): Promise<APIInteractionResponse> {
+export async function handleInteraction(interaction: APIBaseInteraction<any, any>, env: Env): Promise<APIInteractionResponse> {
 	if(interaction.type === InteractionType.Ping) {
 		return {
 			type: InteractionResponseType.Pong
@@ -89,7 +64,7 @@ export async function handleInteraction(interaction: APIBaseInteraction<any, any
 	} else if (interaction.type === InteractionType.MessageComponent) {
 		return handleReplyButton(interaction);
 	} else if(interaction.type === InteractionType.ModalSubmit) {
-        return await handleReplySubmit(interaction);
+        return await handleReplySubmit(interaction, env);
 	} else {
 		return {
 			type: InteractionResponseType.ChannelMessageWithSource,

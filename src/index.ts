@@ -15,7 +15,7 @@ export default {
 			return new Response("Unauthorized", { status: 401 });
 		
 		const body = await request.json() as APIBaseInteraction<any, any>;
-		const response = await handleInteraction(body);
+		const response = await handleInteraction(body, env);
 		return new Response(
 			JSON.stringify(response),
 			{

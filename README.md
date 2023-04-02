@@ -37,6 +37,15 @@ custom address (or catch-all) that routes to your worker.
 
 https://mailchannels.zendesk.com/hc/en-us/articles/200262610-Set-up-SPF-Records
 
+### DKIM + Mailchannels
+
+https://mailchannels.zendesk.com/hc/en-us/articles/7122849237389
+
+You can use the following commands to set the required variables:
+- `wrangler secret put DKIM_DOMAIN`
+- `wrangler secret put DKIM_SELECTOR`
+- `wrangler secret put DKIM_PRIVATE_KEY`
+
 ## Routing to multiple channels
 
 You can modify `src/routing.ts` for more advanced routing.
