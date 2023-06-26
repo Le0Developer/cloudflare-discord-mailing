@@ -5,7 +5,7 @@ import { EmbedMail, PostalMail } from "./types"
 export function makeEmbed(email: PostalMail): APIEmbed {
 	return {
 		title: email.subject,
-		description: email.text.substring(0, 4096),
+		description: (email.text || parseHTML(email.html)).trim().substring(0, 4096) || "No content found",
 		author: {
 			name: encodeAddress(email.from)
 		},
@@ -25,4 +25,17 @@ export function parseEmbed(embed: APIEmbed): EmbedMail {
 		from: decodeAddress(embed.author?.name as string),
 		timestamp: embed.timestamp as string,
 	}
+}
+
+function parseHTML(html: string): string {
+	html = html.replace(/<!doctype[^>]+>/i, "");
+	html = html.replace(/<head>.*?<\/head>/i, "");
+	html = html.replace(/<style[^>]*>.*?<\/style>/gi, "");
+	html = html.replace(/<script[^>]*>.*?<\/script>/gi, "");
+	html = html.replace(/\n|\r/g, " ");
+	html = html.replace(/&#?\w+;/g, " ");
+	html = html.replace(/<br\s*?\/?>/gi, "\n");
+	html = html.replace(/[ \t]+/g, " ");
+	html = html.replace(/^\s+|\s+$/gm, "");
+	return html.replace(/<\/?[^>]+?>/g, "")
 }
