@@ -5,7 +5,7 @@ import { EmbedMail, PostalMail } from "./types"
 export function makeEmbed(email: PostalMail): APIEmbed {
 	return {
 		title: email.subject,
-		description: email.text.substring(0, 4096) || parseHTML(email.html).substring(0, 4096) || "No content found",
+		description: (email.text || parseHTML(email.html)).trim().substring(0, 4096) || "No content found",
 		author: {
 			name: encodeAddress(email.from)
 		},
