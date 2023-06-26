@@ -28,7 +28,7 @@ export function parseEmbed(embed: APIEmbed): EmbedMail {
 }
 
 function parseHTML(html: string): string {
-	html = html.replace(/<!doctype.*>/i,"");
+	html = html.replace(/<!doctype[^>]+>/i, "");
 	html = html.replace(/<head>[\w\W]*?<\/head>/i,"");
 	html = html.replace(/<style.*>[\w\W]*?<\/style>/gi,"");
 	html = html.replace(/<script.*>[\w\W]*?<\/script>/gi,"");
