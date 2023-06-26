@@ -29,9 +29,9 @@ export function parseEmbed(embed: APIEmbed): EmbedMail {
 
 function parseHTML(html: string): string {
 	html = html.replace(/<!doctype[^>]+>/i, "");
-	html = html.replace(/<head>[\w\W]*?<\/head>/i,"");
-	html = html.replace(/<style.*>[\w\W]*?<\/style>/gi,"");
-	html = html.replace(/<script.*>[\w\W]*?<\/script>/gi,"");
+	html = html.replace(/<head>.*?<\/head>/i, "");
+	html = html.replace(/<style[^>]*>.*?<\/style>/gi, "");
+	html = html.replace(/<script[^>]*>.*?<\/script>/gi, "");
 	html = html.replace(/\n|\r/g," ");
 	html = html.replace(/&\w+;/g," ");
 	html = html.replace(/\<\/p\>/gi,"\n");
