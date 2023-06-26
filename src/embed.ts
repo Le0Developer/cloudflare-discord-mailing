@@ -32,7 +32,7 @@ function parseHTML(html: string): string {
 	html = html.replace(/<head>.*?<\/head>/i, "");
 	html = html.replace(/<style[^>]*>.*?<\/style>/gi, "");
 	html = html.replace(/<script[^>]*>.*?<\/script>/gi, "");
-	html = html.replace(/\n|\r/g," ");
+	html = html.replace(/\n|\r/g, " ");
 	html = html.replace(/&\w+;/g," ");
 	html = html.replace(/\<\/p\>/gi,"\n");
 	html = html.replace(/\<\/li\>/gi," ");
