@@ -34,7 +34,7 @@ function parseHTML(html: string): string {
 	html = html.replace(/<script[^>]*>.*?<\/script>/gi, "");
 	html = html.replace(/\n|\r/g, " ");
 	html = html.replace(/&#?\w+;/g, " ");
-	html = html.replace(/\<br\s*?\/?\>/gi,"\n");
+	html = html.replace(/<br\s*?\/?>/gi, "\n");
 	html = html.replace(/([ \t])+/g," ");
 	html = html.replace(/\n /g,"\n");
 	return html.replace(/(<([^>]+)>)/gi, "")
